@@ -1,0 +1,33 @@
+{% if include_sickbeard %}
+# Sickbeard
+location {{ sickbeard_webroot }} {
+        proxy_pass        http://localhost:{{ sickbeard_port }}{{ sickbeard_webroot }}/;
+        include           proxy-control.conf;
+}
+{% endif %}
+
+{% if include_sabnzbd %}
+# Sabnzbd
+location {{ sabnzbd_webroot }} {
+        proxy_pass        http://localhost:{{ sabnzbd_port }}/sabnzbd;
+        include           proxy-control.conf;
+}
+{% endif %}
+
+{% if include_couchpotato %}
+# Couchpotato
+location /{{ couchpotato_webroot }} {
+        proxy_pass        http://localhost:{{ couchpotato_port }}/{{ couchpotato_webroot }};
+        include           proxy-control.conf;
+        proxy_redirect    off;
+}
+{% endif %}
+
+{% if include_transmission %}
+# Transmission
+location {{ transmission_webroot }} {
+    proxy_pass http://localhost:{{ transmission_port }};
+    proxy_pass_header X-Transmission-Session-Id;
+    include proxy-control.conf;
+}
+{% endif %}

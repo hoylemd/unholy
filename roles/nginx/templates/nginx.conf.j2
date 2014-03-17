@@ -1,0 +1,43 @@
+worker_processes  {{ nginx_worker_processes }};
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+        '$status $body_bytes_sent "$http_referer" '
+        '"$http_user_agent" "$http_x_forwarded_for"';
+
+    sendfile        on;
+
+    keepalive_timeout  65;
+
+    server {
+        listen 80;
+        server_name {{ server_name }};
+        
+        # Redirect to SSL
+        rewrite ^ https://$server_name$request_uri? permanent;
+    }
+
+    server {
+        listen 443;
+        server_name {{ server_name }};
+
+        ssl on;
+        ssl_certificate {{ nginx_ssl_cert }};
+        ssl_certificate_key {{ nginx_ssl_key }};
+
+        ssl_protocols TLSv1.2 TLSv1.1;
+        ssl_ciphers     ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AES:RSA+3DES:!ADH:!AECDH:!MD5:!DSS;
+        ssl_prefer_server_ciphers on;
+        
+        include auth-basic.conf;
+        include services.conf;
+    }
+}

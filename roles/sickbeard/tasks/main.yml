@@ -1,0 +1,27 @@
+---
+- name: Ensure sickbeard dependencies are installed
+  action: apt pkg={{ item }} state=installed
+  with_items:
+    - git-core
+    - python2.7
+    - python-cheetah
+- name: Ensure sickbeard user is present
+  user: name={{ user }} home={{ home }} state=present comment="Sickbeard"
+- name: Clone sickbeard
+  #git: repo={{ repo }} dest="{{ home }}/.sickbeard" version=master
+  command: git clone {{ repo }} "{{ home }}/.sickbeard"
+  ignore_errors: yes
+- name: Ensure sickbeard home permissions are set correctly
+  file: path={{ home }} owner={{ user }} group={{ group }} recurse=yes state=directory
+- name: Ensure sickbeard defaults are present
+  template: src=defaults.j2 dest=/etc/default/sickbeard owner=root group=root mode=0644
+- name: Configure sickbeard.
+  ini_file: dest="{{ home }}/config.ini" owner={{ user }} group={{ group }} section={{ item.section }} option={{ item.option }} value={{ item.value }}
+  with_items:
+    - { section: "General", option: "web_port", value: "{{ sickbeard_port }}" }
+    - { section: "General", option: "web_host", value: "{{ host }}" }
+    - { section: "General", option: "web_root", value: "{{ sickbeard_webroot }}" }
+- name: Ensure sickbeard init script is in its correct place.
+  command: cp "{{ home }}/.sickbeard/init.ubuntu" /etc/init.d/sickbeard
+- name: Ensure sickbeard is running
+  service: name=sickbeard state=started enabled=yes

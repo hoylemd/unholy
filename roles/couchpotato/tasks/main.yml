@@ -1,0 +1,26 @@
+---
+- name: Ensure couchpotato dependencies are installed.
+  action: apt pkg={{ item }} state=installed
+  with_items:
+    - git-core
+    - python2.7
+- name: Ensure couchpotato user is present.
+  user: name={{ user }} home={{ home }} state=present comment="Couchpotato"
+- name: Clone couchpotato
+  #git: repo={{ repo }} dest="{{ home }}/couchpotato" version=master
+  command: git clone {{ repo }} "{{ home }}/.couchpotato"
+  ignore_errors: yes
+- name: Ensure couchpotato home permissions are set correctly.
+  file: path={{ home }} owner={{ user }} group={{ group }} recurse=yes state=directory
+- name: Ensure couchpotato defaults are present.
+  template: src=defaults.j2 dest=/etc/default/couchpotato owner=root group=root mode=0644
+- name: Configure couchpotato.
+  ini_file: dest="{{ home }}/config.ini" owner={{ user }} group={{ group }} section={{ item.section }} option={{ item.option }} value={{ item.value }}
+  with_items:
+    - { section: "core", option: "port", value: "{{ couchpotato_port }}" }
+    - { section: "core", option: "host", value: "{{ host }}" }
+    - { section: "core", option: "url_base", value: "{{ couchpotato_webroot }}" }
+- name: Ensure couchpotato init script is in the correct place.
+  command: cp "{{ home }}/.couchpotato/init/ubuntu" /etc/init.d/couchpotato
+- name: Ensure couchpotato is running.
+  service: name=couchpotato state=started enabled=yes

@@ -1,0 +1,6 @@
+---
+user: couchpotato
+group: couchpotato
+home: /opt/couchpotato
+host: 127.0.0.1
+repo: git://github.com/RuudBurger/CouchPotatoServer.git

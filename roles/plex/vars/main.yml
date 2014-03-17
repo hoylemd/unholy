@@ -1,0 +1,3 @@
+plex_download: http://downloads.plexapp.com/plex-media-server/0.9.9.7.429-f80a8d6/plexmediaserver_0.9.9.7.429-f80a8d6_amd64.deb
+sha256_sum: "227898f1d4f0cddfd38fd057579dc05bb7412dbb90167f262cab4625e69c2ce7"
+plex_deb_path: /tmp/plex.deb

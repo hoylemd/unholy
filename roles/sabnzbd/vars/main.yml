@@ -1,0 +1,6 @@
+user: sabnzbd
+group: sabnzbd
+home: /opt/sabnzbd
+host: 127.0.0.1
+port: 8000
+webroot: "/sabnzbd"

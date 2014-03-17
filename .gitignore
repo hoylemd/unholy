@@ -1,0 +1,8 @@
+
+.vagrant/provisioners/ansible/inventory/vagrant_ansible_inventory
+
+.vagrant/machines/default/virtualbox/id
+
+.vagrant/machines/default/virtualbox/action_set_name
+
+.vagrant/machines/default/virtualbox/action_provision

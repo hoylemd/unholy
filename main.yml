@@ -1,0 +1,21 @@
+---
+- hosts: all
+  sudo: True
+  vars_files:
+    - vars.yml
+  vars_prompt:
+    - name: "server_name"
+      prompt: "What is the name of this server (foo.bar.com)"
+    - name: "htpasswd_name"
+      prompt: "Enter a username for HTTP authorization"
+    - name: "htpasswd_password"
+      prompt: "Enter a password for HTTP authorization"
+    - name: "transmission_download_dir"
+      prompt: "Transmission download directory"
+      default: "/var/lib/transmission-daemon/downloads"
+  roles:
+    - sabnzbd
+    - sickbeard
+    - couchpotato
+    - transmission
+    - plex
