@@ -19,7 +19,7 @@ If you've never used ansible, here are some basic instructions:
     sudo pip install ansible  # people tend to bitch about pip. you can use apt or brew too.
     # add your server to an inventory file
     nano unholy
-    ansible-playbook -i unholy main.yml
+    ansible-playbook -i unholy --ask-sudo-pass main.yml
 
 Testing
 -------
