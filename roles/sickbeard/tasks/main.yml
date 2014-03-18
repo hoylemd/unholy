@@ -1,27 +1,90 @@
 ---
+# Dependencies
 - name: Ensure sickbeard dependencies are installed
   action: apt pkg={{ item }} state=installed
   with_items:
     - git-core
     - python2.7
     - python-cheetah
-- name: Ensure sickbeard user is present
-  user: name={{ user }} home={{ home }} state=present comment="Sickbeard"
+
+# Download source
 - name: Clone sickbeard
-  #git: repo={{ repo }} dest="{{ home }}/.sickbeard" version=master
-  command: git clone {{ repo }} "{{ home }}/.sickbeard"
-  ignore_errors: yes
+  command: git clone {{ repo }} {{ source_location }} creates={{ source_location }}
+
+# Setup env
+- name: Ensure user group for the applications exists
+  group: name={{ user_group }} state=present
+- name: Ensure sickbeard user is present
+  user: name={{ user }} group={{ user_group }}
+        home={{ sickbeard_home }} state=present comment="Sickbeard"
 - name: Ensure sickbeard home permissions are set correctly
-  file: path={{ home }} owner={{ user }} group={{ group }} recurse=yes state=directory
+  file: path={{ sickbeard_home }} owner={{ user }} group={{ user_group }}
+        recurse=yes state=directory
 - name: Ensure sickbeard defaults are present
-  template: src=defaults.j2 dest=/etc/default/sickbeard owner=root group=root mode=0644
-- name: Configure sickbeard.
-  ini_file: dest="{{ home }}/config.ini" owner={{ user }} group={{ group }} section={{ item.section }} option={{ item.option }} value={{ item.value }}
+  template: src=defaults.j2 dest=/etc/default/sickbeard
+            owner=root group=root mode=0644
+- name: Copy scripts dir to sabnzbd home
+  command: cp -r "{{ source_location }}/autoProcessTV/" "{{ sabnzbd_script_dir }}/"
+           creates={{ sabnzbd_script_dir }}
+  register: copied
+- name: Set permissions on script dir
+  command: "{{ item }}"
+  with_items:
+    - chown -R "{{ user }}:{{ user_group }}" {{ sabnzbd_script_dir }}
+    - chmod -R 775 {{ sabnzbd_script_dir }}
+  when: copied|changed
+- name: Ensure sickbeard init script is in its correct place.
+  command: cp "{{ source_location }}/init.ubuntu" /etc/init.d/sickbeard
+           creates=/etc/init.d/sickbeard
+  register: copied
+- name: Set permissions on init script
+  command: "{{ item }}"
+  with_items:
+    - chown root:root /etc/init.d/sickbeard
+    - chmod 744 /etc/init.d/sickbeard
+  when: copied|changed
+
+# Configure
+- name: Configure sabnzbd script
+  template: src=autoProcessTV.cfg.j2
+            dest="{{ sabnzbd_script_dir }}/autoProcessTV.cfg"
+            owner={{ user }} group={{ user_group }} mode=0755
+  when: include_sabnzbd == true
+# ini_file doesn't work with sabnzbd's fucked up format
+- debug: msg="Add a category to sabnzbd with name {{ sab_category }} using sabToSickBeard.py"
+
+- name: Configure sickbeard
+  ini_file: dest={{ config_location }}
+            owner={{ user }} group={{ user_group }}
+            section={{ item.section }} option={{ item.option }}
+            value={{ item.value }}
   with_items:
     - { section: "General", option: "web_port", value: "{{ sickbeard_port }}" }
     - { section: "General", option: "web_host", value: "{{ host }}" }
     - { section: "General", option: "web_root", value: "{{ sickbeard_webroot }}" }
-- name: Ensure sickbeard init script is in its correct place.
-  command: cp "{{ home }}/.sickbeard/init.ubuntu" /etc/init.d/sickbeard
+    # This fails because ansible splits the pattern by spaces for some odd reason
+    #- { section: "General", option: "naming_pattern", value: "{{ naming_pattern }}" }
+    - { section: "SABnzbd", option: "sab_category", value: "{{ sab_category }}" }
+- name: Configure pushover
+  ini_file: dest={{ config_location }}
+            section={{ item.section }} option={{ item.option }}
+            value={{ item.value }}
+  with_items:
+    - { section: "Pushover", option: "pushover_userkey", value: "{{ pushover_user_key }}" }
+    - { section: "Pushover", option: "pushover_notify_ondownload", value: 1 }
+    - { section: "Pushover", option: "pushover_notify_onsnatch", value: 0 }
+    - { section: "Pushover", option: "use_pushover", value: 1 }
+  when: pushover_user_key != ""
+- name: Configure trakt
+  ini_file: dest={{ config_location }}
+            section={{ item.section }} option={{ item.option }}
+            value={{ item.value }}
+  with_items:
+    - { section: "Trakt", option: "trakt_username", value: "{{ trakt_username }}" }
+    - { section: "Trakt", option: "trakt_api", value: "{{ trakt_api_key }}" }
+    - { section: "Trakt", option: "use_trakt", value: 1 }
+  when: trakt_username != "" and trakt_api_key != ""
+
+# Start it
 - name: Ensure sickbeard is running
   service: name=sickbeard state=started enabled=yes

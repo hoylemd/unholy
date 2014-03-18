@@ -1,6 +1,5 @@
 ---
 user: couchpotato
-group: couchpotato
-home: /opt/couchpotato
-host: 127.0.0.1
+config_file: "{{ couchpotato_home }}/config.ini"
 repo: git://github.com/RuudBurger/CouchPotatoServer.git
+source_location: "{{ couchpotato_home }}/.couchpotato"

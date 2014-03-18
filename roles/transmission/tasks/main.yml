@@ -1,11 +1,16 @@
 ---
-- name: Ensure transmission-daemon is installed.
+- name: Ensure transmission-daemon is installed
   apt: pkg=transmission-daemon state=present
-- name: Kill transmission because it starts after installing.
+  register: installed
+- name: Kill transmission because it starts after installing
   service: name=transmission-daemon state=stopped
-- name: Configure transmission.
-  template: src=config.json.j2 dest=/etc/transmission-daemon/settings.json owner=debian-transmission group=debian-transmission mode=0644
-- name: Ensure download dir exists.
-  command: mkdir -p {{ transmission_download_dir }}
-- name: Ensure transmission is running.
+  when: installed|changed
+- name: Configure transmission
+  template: src=config.json.j2 dest=/etc/transmission-daemon/settings.json
+            owner=debian-transmission group=debian-transmission mode=0644
+  when: installed|changed
+- name: Ensure download dir exists
+  file: path={{ transmission_download_dir }}
+        owner={{ user }} group={{ user_group }} state=directory mode=0775
+- name: Ensure transmission is running
   service: name=transmission-daemon state=started enabled=yes

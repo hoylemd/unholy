@@ -1,4 +1,6 @@
 user: sickbeard
-group: sickbeard
-home: /opt/sickbeard
 repo: git://github.com/midgetspy/Sick-Beard.git
+source_location: "{{ sickbeard_home }}/.sickbeard"
+config_location: "{{ sickbeard_home }}/config.ini"
+naming_pattern: 'Season %S/%SN - S%0SE%0E - %EN'
+sab_category: "sickbeard"

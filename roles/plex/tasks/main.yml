@@ -1,6 +1,8 @@
 ---
-- name: Ensure plex dependencies are installed.
+# Dependencies
+- name: Ensure plex dependencies are installed
   action: apt pkg={{ item }} state=present
+  register: result
   with_items:
     - libavahi-common3
     - libavahi-core7
@@ -11,17 +13,26 @@
     - avahi-daemon
     - avahi-utils
   ignore_errors: yes
-- name: Running apt-get -f install to fix any potential problems the last command had.
+- name: Running apt-get -f install to fix any potential problems the last command had
   command: apt-get -f install
-#- name: Add plex ubuntu repo.
-#  apt_repository: repo="deb http://plex.r.worldssl.net/PlexMediaServer/ubuntu-repo lucid main" state=present
-#- name: Add plex key.
-#  apt_key: url="http://plexapp.com/plex_pub_key.pub"
+  when: result|failed
+
+# Install
 - name: Download plex .deb
-  #get_url: url={{ plex_download }} dest={{ plex_deb_path }} sha256sum={{ sha256_sum}}
-  command: wget -nc {{ plex_download }} -O {{ plex_deb_path }}
+  get_url: url={{ plex_download }} dest={{ plex_deb_path }}
   ignore_errors: yes
-- name: Ensure plex is installed.
-  command: dpkg -i {{ plex_deb_path }}
-- name: Ensure plex is running.
+- name: Check if plex is installed
+  command: "dpkg -s plexmediaserver"
+  register: result
+  changed_when: False
+  ignore_errors: yes
+- name: Installing plex
+  command: "dpkg -i {{ plex_deb_path }}"
+  when: result|failed
+- name: Ensure the Unofficial Plex App Store is installed
+  command: git clone {{ app_store_repo }} "{{ plex_application_support_dir }}/Plug-ins/AppStore.bundle"
+           creates="{{ plex_application_support_dir }}/Plug-ins/AppStore.bundle"
+
+# Start it
+- name: Ensure plex is running
   service: name=plexmediaserver state=started

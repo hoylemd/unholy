@@ -4,15 +4,33 @@
   vars_files:
     - vars.yml
   vars_prompt:
-    - name: "server_name"
-      prompt: "What is the name of this server (foo.bar.com)"
-    - name: "htpasswd_name"
+    - name: server_name
+      prompt: "What is the name of this server"
+      private: no
+      default: "localhost"
+    - name: htpasswd_name
       prompt: "Enter a username for HTTP authorization"
-    - name: "htpasswd_password"
+      private: no
+    - name: htpasswd_password
       prompt: "Enter a password for HTTP authorization"
-    - name: "transmission_download_dir"
+      private: yes
+    - name: transmission_download_dir
       prompt: "Transmission download directory"
       default: "/var/lib/transmission-daemon/downloads"
+      private: no
+    - name: sabnzbd_download_dir
+      prompt: "Sabnzbd download directory"
+      default: "/opt/sabnzbd/Downloads/complete"
+      private: no
+    - name: pushover_user_key
+      prompt: "Pushover user key"
+      private: no
+    - name: trakt_username
+      prompt: "Trakt username"
+      private: no
+    - name: trakt_api_key
+      prompt: "Trakt API key (http://trakt.tv/settings/api)"
+      private: no
   roles:
     - sabnzbd
     - sickbeard

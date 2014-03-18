@@ -1,15 +1,26 @@
 --- 
-host: 0.0.0.0
+host: 127.0.0.1
+
+# group sickbeard/sab/cp will be part of
+user_group: "unholy"
+
 # set the include_* vars to false if you don't use that service
 include_sabnzbd: true
 sabnzbd_port: 8000
 sabnzbd_webroot: "/sabnzbd"
+sabnzbd_home: /opt/sabnzbd
+sabnzbd_script_dir: "{{ sabnzbd_home }}/scripts"
+
 include_sickbeard: true
 sickbeard_port: 8010
 sickbeard_webroot: "/sickbeard"
+sickbeard_home: /opt/sickbeard
+
 include_couchpotato: true
 couchpotato_port: 8020
 couchpotato_webroot: "couchpotato"
+couchpotato_home: /opt/couchpotato
+
 include_transmission: true
 transmission_port: 8030
 transmission_webroot: "/transmission"
