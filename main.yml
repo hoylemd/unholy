@@ -31,6 +31,9 @@
     - name: trakt_api_key
       prompt: "Trakt API key (http://trakt.tv/settings/api)"
       private: no
+  tasks:
+    - name: Make sure current user is part of the group.
+      user: name={{ user }} group={{ user_group }} state=present
   roles:
     - sabnzbd
     - sickbeard
