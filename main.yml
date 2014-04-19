@@ -35,8 +35,10 @@
     - name: Make sure current user is part of the group.
       user: name={{ user }} group={{ user_group }} state=present
   roles:
+    - nginx
     - sabnzbd
-    - sickbeard
     - couchpotato
+    - nzbdrone
+    - sickbeard
     - transmission
     - plex

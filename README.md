@@ -3,7 +3,7 @@ unholy
 
 This is an ansible playbook that will configure all of your media management needs on an Ubuntu linux server (tested with 13.10).
 
-It installs nginx, sabnzbd, sickbeard, couchpotato, transmission and plex media server.
+It installs nginx, sabnzbd, sickbeard, nzbdrone, couchpotato, transmission and plex media server.
 
 Usage
 -----
@@ -51,6 +51,11 @@ Sickbeard
 ---------
 
 Sickbeard should work just fine out of the box, go to https://your_server/sickbeard.
+
+NZBDrone
+--------
+
+Currently testing
 
 Couchpotato
 -----------

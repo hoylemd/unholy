@@ -14,6 +14,14 @@ location {{ sabnzbd_webroot }} {
 }
 {% endif %}
 
+{% if include_nzbdrone %}
+# NZBDrone
+location {{ nzbdrone_webroot }} {
+        proxy_pass        http://localhost:{{ nzbdrone_port }}{{ nzbdrone_webroot }};
+        include proxy-control.conf;
+}
+{% endif %}
+
 {% if include_couchpotato %}
 # Couchpotato
 location /{{ couchpotato_webroot }} {

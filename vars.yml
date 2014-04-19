@@ -1,4 +1,4 @@
---- 
+---
 host: 127.0.0.1
 
 # group sickbeard/sab/cp will be part of
@@ -15,6 +15,11 @@ include_sickbeard: true
 sickbeard_port: 8010
 sickbeard_webroot: "/sickbeard"
 sickbeard_home: /opt/sickbeard
+
+include_nzbdrone: true
+nzbdrone_port: 8011
+nzbdrone_webroot: "/nzbdrone"
+nzbdrone_home: /opt/NzbDrone
 
 include_couchpotato: true
 couchpotato_port: 8020
