@@ -11,14 +11,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "chef/ubuntu-13.10"
-  
+
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "main.yml"
   end
-  
+
   config.vm.network :forwarded_port, host: 8080, guest: 443
   config.vm.network :forwarded_port, host: 8000, guest: 8000
+  config.vm.network :forwarded_port, host: 8001, guest: 8001
   config.vm.network :forwarded_port, host: 8010, guest: 8010
+  config.vm.network :forwarded_port, host: 8011, guest: 8011
   config.vm.network :forwarded_port, host: 8020, guest: 8020
   config.vm.network :forwarded_port, host: 8030, guest: 8030
   config.vm.network :forwarded_port, host: 9091, guest: 9091

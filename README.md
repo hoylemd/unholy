@@ -1,9 +1,9 @@
 unholy
 ------
 
-This is an ansible playbook that will configure all of your media management needs on an Ubuntu linux server (tested with 13.10).
+This is an ansible playbook that will configure your media management needs on an Ubuntu linux server (tested with 13.10 and 14.04).
 
-It installs nginx, sabnzbd, sickbeard, nzbdrone, couchpotato, transmission and plex media server.
+It can install nginx, sabnzbd, nzbget (soon), sickbeard, nzbdrone, couchpotato, transmission and plex media server.
 
 Usage
 -----
@@ -11,15 +11,14 @@ Usage
 http://asciinema.org/a/8196
 
 If you're familiar with ansible, all you need to do is edit the vars.yml file,
-check all of the roles to see if they're configured to your liking, make an inventory file and run `ansible-playbook -i inventory main.yml`.
+check all of the roles to see if they're configured to your liking, make an inventory file and run ansible.
+A script is provided that handles running ansible for you.
 
-If you've never used ansible, here are some basic instructions:
+Here's a basic example:
 
     # install ansible
     sudo pip install ansible  # people tend to bitch about pip. you can use apt or brew too.
-    # add your server to an inventory file
-    nano unholy
-    ansible-playbook -i unholy --ask-sudo-pass -u your_user main.yml
+    ./unholy user@host.com
 
 Testing
 -------
@@ -45,7 +44,8 @@ Sabnzbd
 
 You'll find sabnzbd at https://your_server/sabnzbd
 Sabnzbd doesn't allow for configuration of a url-base/web-root, so on initial setup,
-it won't redirect to the wizard properly. To fix this, just manually append the wizard path. In other words, go here: https://your_server/sabnzbd/wizard.
+it won't redirect to the wizard properly. To fix this, just manually append the wizard path.
+In other words, go here: https://your_server/sabnzbd/wizard.
 
 Sickbeard
 ---------

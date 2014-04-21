@@ -1,0 +1,35 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import subprocess
+import re
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("login", help="user@host to run unholy on")
+
+
+if __name__ == "__main__":
+    if not os.path.isfile("main.yml"):  # need to run from unholy root
+        print("This must be run from the unholy directory root.")
+        exit(1)
+
+    args = parser.parse_args()
+    user, host = re.match("(.+)@(.+)", args.login).groups()
+
+    # write host to inventory file
+    with open("unholy-inventory", "w") as f:
+        f.write(host)
+
+    # call ansible-playbook
+    cmd = "ansible-playbook -u {user} -i unholy-inventory " + \
+           "--ask-sudo-pass main.yml"
+    cmd = cmd.format(user=user)
+    try:
+        subprocess.call(cmd.split())
+    except KeyboardInterrupt:  # ctrl-c
+        pass
+
+    # delete inventory
+    os.remove("unholy-inventory")
