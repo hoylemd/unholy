@@ -39,6 +39,6 @@
     - sabnzbd
     - couchpotato
     - nzbdrone
-    - sickbeard
+    #- sickbeard
     - transmission
     - plex

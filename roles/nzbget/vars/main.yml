@@ -1,4 +1,0 @@
----
-user: nzbget
-nzbget_dir: "{{ sabnzbd_download_dir }}/../nzbget"
-nzbget_config: "{{ nzbget_home}}/nzbget.conf"
