@@ -8,7 +8,7 @@
   user: name={{ user }} group={{ user_group }}
         home={{ sabnzbd_home }} state=present comment="Sabnzbd"
 - name: Ensure sabnzbd download dir exists
-  file: path={{ sabnzbd_download_dir }} state=directory
+  file: path={{ usenet_download_dir }} state=directory
         owner={{ user }} group={{ user_group }} mode=0775
 - name: Ensure permissions for sabnzbd home are set correctly
   file: path={{ sabnzbd_home }}
@@ -31,9 +31,9 @@
   with_items:
   - { section: "misc", option: "host", value: "{{ host }}" }
   - { section: "misc", option: "port", value: "{{ sabnzbd_port }}" }
-  - { section: "misc", option: "complete_dir", value: "{{ sabnzbd_download_dir }}" }
+  - { section: "misc", option: "complete_dir", value: "{{ usenet_download_dir }}" }
   - { section: "misc", option: "script_dir", value: "{{ sabnzbd_script_dir }}" }
 
 # Start it
-- name: Start sabnzbd  
+- name: Start sabnzbd
   service: name=sabnzbdplus state=started enabled=yes

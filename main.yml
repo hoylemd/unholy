@@ -18,8 +18,8 @@
       prompt: "Transmission download directory"
       default: "/var/lib/transmission-daemon/downloads"
       private: no
-    - name: sabnzbd_download_dir
-      prompt: "Sabnzbd download directory"
+    - name: usenet_download_dir
+      prompt: "Usenet download directory"
       default: "/opt/sabnzbd/Downloads/complete"
       private: no
     - name: pushover_user_key

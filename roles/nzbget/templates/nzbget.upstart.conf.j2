@@ -1,0 +1,9 @@
+author "bsmt"
+description "Upstart script to run nzbget as a service on Ubuntu."
+
+setuid {{ user }}
+setgid {{ user_group }}
+start on runlevel [2345]
+stop on runlevel [016]
+
+exec nzbget -c {{ nzbget_conf }}

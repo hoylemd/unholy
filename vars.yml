@@ -5,13 +5,18 @@ host: 127.0.0.1
 user_group: "unholy"
 
 # set the include_* vars to false if you don't use that service
-include_sabnzbd: true
+include_sabnzbd: false
 sabnzbd_port: 8000
 sabnzbd_webroot: "/sabnzbd"
 sabnzbd_home: /opt/sabnzbd
 sabnzbd_script_dir: "{{ sabnzbd_home }}/scripts"
 
-include_sickbeard: true
+include_nzbget: true
+nzbget_port: 8001
+nzbget_webroot: "/nzbget"
+nzbget_home: /opt/nzbget
+
+include_sickbeard: false
 sickbeard_port: 8010
 sickbeard_webroot: "/sickbeard"
 sickbeard_home: /opt/sickbeard

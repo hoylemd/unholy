@@ -14,6 +14,13 @@ location {{ sabnzbd_webroot }} {
 }
 {% endif %}
 
+{% if include_nzbget %}
+# nzbget
+location {{ nzbget_webroot }} {
+        proxy_pass http://127.0.0.1:6789;
+        include proxy-control.conf;
+}
+
 {% if include_nzbdrone %}
 # NZBDrone
 location {{ nzbdrone_webroot }} {
