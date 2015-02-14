@@ -1,0 +1,12 @@
+---
+
+# Used for pushover notifications
+pushover_user_key
+
+# Track what your watching
+trakt_username
+trakt_api_key
+
+# Used for HTTP auth
+htpasswd_name
+htpasswd_password

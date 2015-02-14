@@ -3,34 +3,8 @@
   sudo: True
   vars_files:
     - vars.yml
-  vars_prompt:
-    - name: server_name
-      prompt: "What is the name of this server"
-      private: no
-      default: "localhost"
-    - name: htpasswd_name
-      prompt: "Enter a username for HTTP authorization"
-      private: no
-    - name: htpasswd_password
-      prompt: "Enter a password for HTTP authorization"
-      private: yes
-    - name: transmission_download_dir
-      prompt: "Transmission download directory"
-      default: "/var/lib/transmission-daemon/downloads"
-      private: no
-    - name: usenet_download_dir
-      prompt: "Usenet download directory"
-      default: "/opt/sabnzbd/Downloads/complete"
-      private: no
-    - name: pushover_user_key
-      prompt: "Pushover user key"
-      private: no
-    - name: trakt_username
-      prompt: "Trakt username"
-      private: no
-    - name: trakt_api_key
-      prompt: "Trakt API key (http://trakt.tv/settings/api)"
-      private: no
+    - private_vars.yml
+
   tasks:
     - name: Make sure current user is part of the group.
       user: name={{ user }} group={{ user_group }} state=present
