@@ -10,10 +10,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
+  #config.vm.box = "hashicorp/precise32"
   config.vm.box = "chef/ubuntu-13.10"
-
+  
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "main.yml"
+    ansible.ask_vault_pass = true
   end
 
   config.vm.network :forwarded_port, host: 8080, guest: 443

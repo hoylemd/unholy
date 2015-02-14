@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     # call ansible-playbook
     cmd = "ansible-playbook -u {user} -i unholy-inventory " + \
-           "--ask-sudo-pass main.yml"
+           " --ask-vault-pass --ask-sudo-pass main.yml"
     cmd = cmd.format(user=user)
     try:
         subprocess.call(cmd.split())

@@ -4,12 +4,16 @@ host: 127.0.0.1
 # group sickbeard/sab/cp will be part of
 user_group: "unholy"
 
+# General Settings
+server_name: "localhost"
+
 # set the include_* vars to false if you don't use that service
 include_sabnzbd: true
 sabnzbd_port: 8000
 sabnzbd_webroot: "/sabnzbd"
 sabnzbd_home: /opt/sabnzbd
 sabnzbd_script_dir: "{{ sabnzbd_home }}/scripts"
+usenet_download_dir:  /opt/sabnzbd/Downloads/complete
 
 include_sickbeard: false
 sickbeard_port: 8010
@@ -23,9 +27,12 @@ nzbdrone_home: /opt/NzbDrone
 
 include_couchpotato: true
 couchpotato_port: 8020
-couchpotato_webroot: "couchpotato"
+couchpotato_webroot: "/couchpotato"
 couchpotato_home: /opt/couchpotato
 
 include_transmission: true
 transmission_port: 8030
 transmission_webroot: "/transmission"
+transmission_download_dir: /var/lib/transmission-daemon/downloads
+
+

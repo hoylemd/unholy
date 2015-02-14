@@ -14,6 +14,16 @@ If you're familiar with ansible, all you need to do is edit the vars.yml file,
 check all of the roles to see if they're configured to your liking, make an inventory file and run ansible.
 A script is provided that handles running ansible for you.
 
+Before you run the playbook you need to create a vault file which can  used to protect important data in source control.
+For more information go here (http://docs.ansible.com/playbooks_vault.html)
+
+The vault file used has to have the name private_vars.yml. Ensure your editor environment variable is set or it defaults to vim.
+
+    # create private file
+    ansible-vault create private_vars.yml
+
+Running the command above will ask you for a password to encrypt with, and open an editor. In that file set the variables highlighted in the private_vars.yml.example file.
+
 Here's a basic example:
 
     # install ansible
