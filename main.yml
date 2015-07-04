@@ -12,7 +12,7 @@
     - nginx
     - sabnzbd
     - couchpotato
-    - nzbdrone
-    #- sickbeard
+      #- nzbdrone
+    - sickbeard
     - transmission
     - plex

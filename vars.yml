@@ -1,11 +1,11 @@
 ---
-host: 127.0.0.1
+host: dorf.ca
 
 # group sickbeard/sab/cp will be part of
 user_group: "unholy"
 
 # General Settings
-server_name: "localhost"
+server_name: "dorf.ca"
 
 # set the include_* vars to false if you don't use that service
 include_sabnzbd: true
@@ -15,12 +15,12 @@ sabnzbd_home: /opt/sabnzbd
 sabnzbd_script_dir: "{{ sabnzbd_home }}/scripts"
 usenet_download_dir:  /opt/sabnzbd/Downloads/complete
 
-include_sickbeard: false
+include_sickbeard: true
 sickbeard_port: 8010
 sickbeard_webroot: "/sickbeard"
 sickbeard_home: /opt/sickbeard
 
-include_nzbdrone: true
+include_nzbdrone: false
 nzbdrone_port: 8011
 nzbdrone_webroot: "/nzbdrone"
 nzbdrone_home: /opt/NzbDrone
