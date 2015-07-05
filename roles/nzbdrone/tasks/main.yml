@@ -38,7 +38,7 @@
 - name: Default ufw to allow connections.
   command: "ufw default allow"
 - name: Ensure ufw is running.
-  #ufw: state=enabled
-  command: "ufw enable"
+  ufw: state=enabled
+  #command: "ufw enable"
 - name: Ensure NZBDrone is running
   service: name=nzbdrone state=started
